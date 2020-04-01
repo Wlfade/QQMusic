@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40B8ACE52434D1E800348CEC /* QQTimeTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B8ACE42434D1E700348CEC /* QQTimeTool.swift */; };
 		4E4FF3342431C2BC00044FC4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3332431C2BC00044FC4 /* AppDelegate.swift */; };
 		4E4FF3362431C2BC00044FC4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3352431C2BC00044FC4 /* SceneDelegate.swift */; };
 		4E4FF33B2431C2BC00044FC4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E4FF3392431C2BC00044FC4 /* Main.storyboard */; };
@@ -70,6 +71,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		40B8ACE42434D1E700348CEC /* QQTimeTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QQTimeTool.swift; sourceTree = "<group>"; };
 		4E4FF3302431C2BC00044FC4 /* QQMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QQMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E4FF3332431C2BC00044FC4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E4FF3352431C2BC00044FC4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 			children = (
 				4E4FF3CA24333FDA00044FC4 /* QQMusicTool.swift */,
 				4E4FF3CC243341AC00044FC4 /* QQMusicOperationTool.swift */,
+				40B8ACE42434D1E700348CEC /* QQTimeTool.swift */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 				4E4FF3BA2432F93F00044FC4 /* QQMusicDataTool.swift in Sources */,
 				4E4FF3B32432EAF900044FC4 /* QQDetailVC.swift in Sources */,
 				4E4FF3362431C2BC00044FC4 /* SceneDelegate.swift in Sources */,
+				40B8ACE52434D1E800348CEC /* QQTimeTool.swift in Sources */,
 				4E4FF3CF2434991500044FC4 /* QQMusicMessageModel.swift in Sources */,
 				4E4FF3B12432EAD700044FC4 /* QQListTVC.swift in Sources */,
 				4E4FF3C2243333F800044FC4 /* UIView+Extension.m in Sources */,

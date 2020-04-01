@@ -81,13 +81,13 @@ extension QQDetailVC{
     
     //上一首
     @IBAction func preMusic() {
-        setUpTimes()
+        setUpOnce()
         QQMusicOperationTool.shareInstance.perMusic()
 
     }
     //下一首
     @IBAction func nextMusic() {
-        setUpTimes()
+        setUpOnce()
         QQMusicOperationTool.shareInstance.nextMusic()
 
     }

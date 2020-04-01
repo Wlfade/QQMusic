@@ -81,23 +81,25 @@ extension QQDetailVC{
     
     //上一首
     @IBAction func preMusic() {
-        setUpTimes()
         QQMusicOperationTool.shareInstance.perMusic()
+
+        setUpOnce()
 
     }
     //下一首
     @IBAction func nextMusic() {
-        setUpTimes()
         QQMusicOperationTool.shareInstance.nextMusic()
+
+        setUpOnce()
 
     }
     
     //赋值1次
     func setUpOnce() -> () {
         
-        let musciMessageM = QQMusicOperationTool.shareInstance.getMusicMessageModel()
+        let musicMessageM = QQMusicOperationTool.shareInstance.getMusicMessageModel()
         
-        guard let musicM = musciMessageM.musicM else{
+        guard let musicM = musicMessageM.musicM else{
             return
         }
         
@@ -113,21 +115,21 @@ extension QQDetailVC{
         singerNameLabel.text = musicM.singer
       
         /** 总时长 */
-        totalTimeLabel.text = "\(musciMessageM.totalTime)"
+        totalTimeLabel.text = QQTimeTool.getFormatTime(timeInterval: musicMessageM.totalTime)
         /** 歌词View */
 //        lrcView
     }
     @objc func setUpTimes() -> () {
-        let musciMessageM = QQMusicOperationTool.shareInstance.getMusicMessageModel()
+        let musicMessageM = QQMusicOperationTool.shareInstance.getMusicMessageModel()
         
         /** 歌词label */
 //        lrcLabel.text = ""
 
         /** 进度条 */
-        progressSlider.value = Float(musciMessageM.costTime / musciMessageM.totalTime)
+        progressSlider.value = Float(musicMessageM.costTime / musicMessageM.totalTime)
         
         /** 播放时长 */
-        costTimeLabel.text = "\(musciMessageM.totalTime)"
+        costTimeLabel.text = QQTimeTool.getFormatTime(timeInterval: musicMessageM.costTime)
     }
 
     func addTimer(){
