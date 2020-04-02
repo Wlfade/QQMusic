@@ -28,7 +28,9 @@ class QQDetailVC: UIViewController {
     /** 总时长 */
     @IBOutlet weak var totalTimeLabel: UILabel!
     /** 歌词View */
-    var lrcView:UIView?
+    lazy var lrcTVC : QQLrcTVC = {
+        return QQLrcTVC()
+    }()
     
     //--------  实时更新
     /** 歌词label */
@@ -39,8 +41,12 @@ class QQDetailVC: UIViewController {
     @IBOutlet weak var progressSlider: UISlider!
     
     
+    @IBOutlet weak var playOrPauseBtn: UIButton!
     //负责更新的计时器
     var timer:Timer?
+    
+    var updateLrcLink : CADisplayLink?
+    
     
 }
 
@@ -50,10 +56,12 @@ extension QQDetailVC{
         super.viewWillAppear(animated)
         setUpOnce()
         addTimer()
+        addLink()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeTimer()
+        removeLink()
     }
     
     override func viewDidLoad() {
@@ -64,7 +72,7 @@ extension QQDetailVC{
     }
     //关闭 视图
     @IBAction func close() {
-        
+        self.dismiss(animated: true, completion: nil)
     }
     
     //播放或暂停
@@ -73,9 +81,11 @@ extension QQDetailVC{
         if sender.isSelected {
             //选中是暂停 状态
             QQMusicOperationTool.shareInstance.pauseCurrenMusic()
+            pauseRotationAnimation()
         }else{
             //普通是播放 状态
             QQMusicOperationTool.shareInstance.playCurrenMusic()
+            resumeRotationAnimation()
         }
     }
     
@@ -118,6 +128,18 @@ extension QQDetailVC{
         totalTimeLabel.text = QQTimeTool.getFormatTime(timeInterval: musicMessageM.totalTime)
         /** 歌词View */
 //        lrcView
+        //切换最新的歌词
+        let lrcMs = QQMusicDataTool.getLrcMs(lrcName: musicM.lrcname)
+        
+        lrcTVC.lrcMs = lrcMs
+        
+        addRotationAnimation()
+        
+        if musicMessageM.isPlaying {
+            resumeRotationAnimation()
+        }else{
+            pauseRotationAnimation()
+        }
     }
     @objc func setUpTimes() -> () {
         let musicMessageM = QQMusicOperationTool.shareInstance.getMusicMessageModel()
@@ -130,15 +152,51 @@ extension QQDetailVC{
         
         /** 播放时长 */
         costTimeLabel.text = QQTimeTool.getFormatTime(timeInterval: musicMessageM.costTime)
+        
+        playOrPauseBtn.isSelected = !musicMessageM.isPlaying
     }
 
+    
+    //MARK: 添加计时器
     func addTimer(){
         timer = Timer(timeInterval: 1, target: self, selector: #selector(QQDetailVC.setUpTimes), userInfo: nil, repeats: true)
         RunLoop.current.add(timer!, forMode: .common)
     }
+    
+    //MARK: 移除计时器
     func removeTimer(){
         timer?.invalidate()
         timer = nil
+    }
+    
+    
+    func addLink()->(){
+        updateLrcLink = CADisplayLink(target: self, selector: #selector(QQDetailVC.updateLrc))
+        updateLrcLink?.add(to: RunLoop.current, forMode: .common)
+    }
+    func removeLink()->(){
+        updateLrcLink?.invalidate()
+        updateLrcLink = nil
+    }
+    
+    @objc func updateLrc() -> () {
+        let musicMessageM = QQMusicOperationTool.shareInstance.getMusicMessageModel()
+        
+        //拿到歌词
+        //时间
+        let time = musicMessageM.costTime
+        //歌词数组
+        let lrcMs = lrcTVC.lrcMs
+        
+        let rowLrcm = QQMusicDataTool.getCurrentLrcM(currentTime: time, lrcMs: lrcMs)
+        
+        let lrcM = rowLrcm.lrcM
+        
+        lrcLabel.text = lrcM?.lrcContent
+        
+        let row = rowLrcm.row
+        
+        lrcTVC.scrollRow = row
     }
 }
 
@@ -157,15 +215,14 @@ extension QQDetailVC {
     
     //添加歌词视图
     func addLrcView() -> () {
-        lrcView = UIView()
-        lrcView?.backgroundColor = UIColor.clear
-        lrcScrollView.addSubview(lrcView!)
+        lrcTVC.tableView?.backgroundColor = UIColor.clear
+        lrcScrollView.addSubview(lrcTVC.tableView!)
     }
     
     //调整frame
     func setLrcViewFrame() -> () {
-        lrcView?.frame = lrcScrollView.bounds;
-        lrcView?.left = lrcScrollView.width
+        lrcTVC.tableView?.frame = lrcScrollView.bounds;
+        lrcTVC.tableView?.left = lrcScrollView.width
     }
     
     //设置scrollView 的属性
@@ -202,4 +259,24 @@ extension QQDetailVC : UIScrollViewDelegate{
         lrcLabel.alpha = radio
         
     }
+    //添加旋转动画
+    func addRotationAnimation(){
+        foreImageView.layer.removeAnimation(forKey: "rotation")
+        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
+        animation.fromValue = 0
+        animation.toValue = Double.pi * 2
+        animation.duration = 30
+        animation.isRemovedOnCompletion = false
+        animation.repeatCount = MAXFLOAT
+        foreImageView.layer.add(animation, forKey: "rotation")
+    }
+    //暂停旋转动画
+    func pauseRotationAnimation(){
+        foreImageView.layer.pauseAnimation()
+    }
+    //继续旋转动画
+    func resumeRotationAnimation(){
+        foreImageView.layer.resumeAnimate()
+    }
+    
 }

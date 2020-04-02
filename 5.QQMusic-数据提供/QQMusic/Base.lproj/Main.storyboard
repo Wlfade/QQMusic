@@ -64,7 +64,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdl-K5-f0F">
+                                    <button opaque="NO" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdl-K5-f0F">
                                         <rect key="frame" x="10" y="30" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="0tQ-hD-0sU"/>
@@ -258,6 +258,7 @@
                         <outlet property="foreImageView" destination="tdb-KI-iXa" id="wea-wh-hPp"/>
                         <outlet property="lrcLabel" destination="tEK-vB-Ps4" id="AhQ-fn-pjV"/>
                         <outlet property="lrcScrollView" destination="4ba-fm-S0P" id="8Ap-gA-g7v"/>
+                        <outlet property="playOrPauseBtn" destination="fH6-KP-bbS" id="GFD-yl-9eU"/>
                         <outlet property="progressSlider" destination="RHv-Uc-29G" id="swi-fo-iOR"/>
                         <outlet property="singerNameLabel" destination="VR2-oi-mD0" id="eS9-zI-yeH"/>
                         <outlet property="songNameLabel" destination="aqe-P8-Iuu" id="02K-9b-3ki"/>
