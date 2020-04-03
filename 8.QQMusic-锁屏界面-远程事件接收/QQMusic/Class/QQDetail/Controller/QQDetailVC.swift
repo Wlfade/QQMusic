@@ -69,6 +69,12 @@ extension QQDetailVC{
         addLrcView()
         setUpLrcScrollView()
         setSlide()
+        
+//        //打开摇一摇功能
+//        UIApplication.shared.applicationSupportsShakeToEdit = true
+//        //让需要摇动的控制器成为第一响应者
+//        self.becomeFirstResponder()
+
     }
     //关闭 视图
     @IBAction func close() {
@@ -91,7 +97,7 @@ extension QQDetailVC{
     
     //上一首
     @IBAction func preMusic() {
-        QQMusicOperationTool.shareInstance.perMusic()
+        QQMusicOperationTool.shareInstance.preMusic()
 
         setUpOnce()
 
@@ -290,4 +296,36 @@ extension QQDetailVC : UIScrollViewDelegate{
         foreImageView.layer.resumeAnimate()
     }
     
+}
+
+extension QQDetailVC {
+    override func remoteControlReceived(with event: UIEvent?) {
+        let type = event?.subtype
+        switch type! {
+        case .remoteControlPlay:
+            print("播放")
+            QQMusicOperationTool.shareInstance.playCurrenMusic()
+            
+        case .remoteControlPause:
+            print("暂停")
+            QQMusicOperationTool.shareInstance.pauseCurrenMusic()
+
+        case .remoteControlNextTrack:
+            print("下一首")
+            QQMusicOperationTool.shareInstance.nextMusic()
+
+        case .remoteControlPreviousTrack:
+            print("上一首")
+            QQMusicOperationTool.shareInstance.preMusic()
+        default:
+            print("nono")
+        }
+        
+        setUpOnce()
+    }
+    
+    override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        QQMusicOperationTool.shareInstance.nextMusic()
+        setUpOnce()
+    }
 }

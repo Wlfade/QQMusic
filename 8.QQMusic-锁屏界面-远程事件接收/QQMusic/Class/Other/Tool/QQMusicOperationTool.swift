@@ -79,7 +79,7 @@ extension QQMusicOperationTool {
     }
     
     //上一首
-    func perMusic() ->  (){
+    func preMusic() ->  (){
         currentPlayIndex -= 1
         //取出需要播放的音乐数据模型
         let model = musicMs[currentPlayIndex]
@@ -104,16 +104,27 @@ extension QQMusicOperationTool {
         let totalTime = musicMessageM.totalTime
         
         let imageName = musicMessageM.musicM?.icon ?? ""
+        
         let image = UIImage(named: imageName)
-        if image != nil {
+        
+        //1.获取当前正在播放的歌词
+        let lrcFileName = musicMessageM.musicM?.lrcname
+        let lrcMs = QQMusicDataTool.getLrcMs(lrcName: lrcFileName)
+        let lrcM = QQMusicDataTool.getCurrentLrcM(currentTime: musicMessageM.costTime, lrcMs: lrcMs).lrcM
+        
+        //2.绘制到图片，生成新的图片
+        let resultImage = QQImageTool.getNewImage(sourceImage: image, str: lrcM?.lrcContent)
+        
+        if resultImage != nil {
             artWork = MPMediaItemArtwork(boundsSize: image!.size, requestHandler: { (size) -> UIImage in
-                return image!
+                return resultImage!
             })
-            
         }
         
         let dic : NSMutableDictionary = [
-            MPMediaItemPropertyAlbumTitle : musicName,
+//            MPMediaItemPropertyAlbumTitle : musicName,
+            MPMediaItemPropertyAlbumTitle : lrcM?.lrcContent ?? "",
+
             MPMediaItemPropertyArtist : singerName,
             MPMediaItemPropertyPlaybackDuration : totalTime,
             MPNowPlayingInfoPropertyElapsedPlaybackTime : costTime,
